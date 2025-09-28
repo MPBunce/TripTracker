@@ -14,11 +14,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-   Rails.application.routes.draw do
+  Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
     resources :users  # Note: use lowercase and plural
-      root "users#index"
+      root "landing#index"
       get "/users", to: "users#index"
       get "/users/new", to: "users#new"
       post "/users", to: "users#create"
