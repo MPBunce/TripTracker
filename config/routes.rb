@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
     resources :users  # Note: use lowercase and plural
       root "landing#index"
+      get "/trips", to: "trips#index"
       get "/users", to: "users#index"
       get "/users/new", to: "users#new"
       post "/users", to: "users#create"
