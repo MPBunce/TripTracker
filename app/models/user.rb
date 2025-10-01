@@ -6,4 +6,12 @@ class User < ApplicationRecord
   # ... other associations
   
   validates :email_address, presence: true, uniqueness: true
+
+  has_one_attached :profile_image
+  
+  # Optional: Add validation
+  # Optional: Add validation
+  validates :profile_image, content_type: ['image/png', 'image/jpeg', 'image/gif'],
+    size: { less_than: 5.megabytes }
+
 end

@@ -25,27 +25,77 @@
       </div>
     <% end %>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :first_name, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.text_field :first_name,
+          class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+
+      <div>
+        <%= form.label :last_name, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.text_field :last_name,
+          class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+    </div>
+
     <div>
       <%= form.label :email_address, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.email_field :email_address, 
-            class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+      <%= form.email_field :email_address,
+        class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
     </div>
 
     <div>
-      <%= form.label :password, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.password_field :password, 
-            class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+      <%= form.label :bio, class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.text_area :bio,
+        rows: 4,
+        placeholder: "Tell us about yourself...",
+        class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
     </div>
 
     <div>
-      <%= form.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.password_field :password_confirmation, 
-            class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+      <%= form.label :profile_image, "Profile Image", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      
+      <% if @user.profile_image.attached? %>
+        <div class="mb-3">
+          <%= image_tag @user.profile_image, class: "h-24 w-24 rounded-full object-cover border-2 border-gray-300" %>
+          <p class="text-sm text-gray-500 mt-2">Current image</p>
+        </div>
+      <% end %>
+      
+      <%= form.file_field :profile_image,
+        accept: "image/*",
+        class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+      <p class="mt-1 text-sm text-gray-500">PNG, JPG, GIF up to 5MB</p>
     </div>
 
-    <div class="flex justify-end space-x-3 pt-4">
-      <%= link_to "Cancel", @user.persisted? ? @user : users_path, 
-            class: "bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
+    <div class="flex items-center">
+      <%= form.check_box :is_public,
+        class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+      <%= form.label :is_public, "Make profile public", class: "ml-2 block text-sm text-gray-700" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :password, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.password_field :password,
+          placeholder: @user.persisted? ? "Leave blank to keep current password" : "",
+          class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+        <% if @user.persisted? %>
+          <p class="mt-1 text-sm text-gray-500">Leave blank to keep current password</p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.password_field :password_confirmation,
+          class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+      <%= link_to "Cancel", @user.persisted? ? @user : users_path,
+        class: "bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
       <%= form.submit class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
     </div>
   <% end %>

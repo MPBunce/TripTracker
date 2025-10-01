@@ -1,0 +1,18 @@
+<nav class="navbar bg-base-100 shadow-lg">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <div class="flex justify-between items-center w-full">
+      <div class="navbar-start">
+        <%= link_to "Trip Tracker", root_path, class: "text-xl" %>
+      </div>
+      
+      <div class="navbar-end gap-2">
+        <% if authenticated? %>
+          <%= link_to "Users", users_path, class: "btn btn-primary btn-sm md:btn-md" %>
+          <%= button_to "Log out", session_path, method: :delete, class: "btn btn-error btn-sm md:btn-md" %>
+        <% else %>
+          <%= link_to "Sign in", new_session_path, class: "btn btn-primary btn-sm md:btn-md" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

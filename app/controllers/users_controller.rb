@@ -45,6 +45,14 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.expect(user: [:email_address, :password, :password_confirmation])
+    params.require(:user).permit(
+      :email_address, 
+      :password, 
+      :password_confirmation, 
+      :first_name,
+      :last_name, 
+      :bio, 
+      :profile_image, 
+      :is_public)
   end
 end
