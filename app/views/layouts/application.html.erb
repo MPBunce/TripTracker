@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full">
+<html class="h-full" data-theme="winter">
   <head>
     <title>Trip Tracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,16 +8,42 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  
   <body class="h-full flex flex-col">
-
-    <%= render "shared/navbar" %>
-    
     <main class="flex-1">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
-      
-        <%= yield %>
-      </div>
+      <%= yield %>
     </main>
     
+    <script>
+      (function() {
+        const themeControllers = document.querySelectorAll('.theme-controller');
+        const htmlElement = document.documentElement;
+        
+        // Load saved theme or use default
+        const savedTheme = localStorage.getItem('theme') || 'winter';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        
+        // Set checkbox state based on saved theme
+        themeControllers.forEach(controller => {
+          if (controller.value === savedTheme) {
+            controller.checked = true;
+          }
+        });
+        
+        // Handle theme changes
+        themeControllers.forEach(controller => {
+          controller.addEventListener('change', function() {
+            const theme = this.checked ? this.value : 'winter';
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Sync all theme controllers
+            themeControllers.forEach(tc => {
+              tc.checked = tc.value === theme;
+            });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

@@ -1,4 +1,129 @@
-<h1>Edit User</h1>
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title text-2xl">
+      <%= @user.persisted? ? "Edit User" : "New User" %>
+    </h2>
 
-<%= render "form", user: @user %>
-<%= link_to "Cancel", @user %>
+    <%= form_with model: @user, local: true, class: "space-y-4" do |form| %>
+      <% if @user.errors.any? %>
+        <div class="alert alert-error">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <h3 class="font-bold">
+              There were <%= pluralize(@user.errors.count, "error") %> with your submission:
+            </h3>
+            <ul class="list-disc list-inside mt-2">
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-control w-full">
+          <%= form.label :first_name, class: "label" do %>
+            <span class="label-text">First Name</span>
+          <% end %>
+          <%= form.text_field :first_name, class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control w-full">
+          <%= form.label :last_name, class: "label" do %>
+            <span class="label-text">Last Name</span>
+          <% end %>
+          <%= form.text_field :last_name, class: "input input-bordered w-full" %>
+        </div>
+      </div>
+
+      <div class="form-control w-full">
+        <%= form.label :email_address, class: "label" do %>
+          <span class="label-text">Email Address</span>
+        <% end %>
+        <%= form.email_field :email_address, class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="form-control w-full">
+        <%= form.label :bio, class: "label" do %>
+          <span class="label-text">Bio</span>
+        <% end %>
+        <%= form.text_area :bio,
+          rows: 4,
+          placeholder: "Tell us about yourself...",
+          class: "textarea textarea-bordered w-full" %>
+      </div>
+
+      <div class="form-control w-full">
+        <%= form.label :profile_image, "Profile Image", class: "label" do %>
+          <span class="label-text">Profile Image</span>
+        <% end %>
+        
+        <% if @user.persisted? %>
+          <div class="mb-3">
+            <% if @user.profile_image.attached? %>
+              <div class="avatar">
+                <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <%= image_tag @user.profile_image %>
+                </div>
+              </div>
+              <p class="label-text-alt mt-2">Current image</p>
+            <% else %>
+              <div class="avatar placeholder">
+                <div class="bg-neutral-focus text-neutral-content rounded-full w-24">
+                  <span class="text-3xl">👤</span>
+                </div>
+              </div>
+              <p class="label-text-alt mt-2">No image uploaded yet</p>
+            <% end %>
+          </div>
+        <% end %>
+        
+        <%= form.file_field :profile_image,
+          accept: "image/*",
+          class: "file-input file-input-bordered w-full" %>
+        <label class="label">
+          <span class="label-text-alt">PNG, JPG, GIF up to 5MB</span>
+        </label>
+      </div>
+
+      <div class="form-control">
+        <label class="label cursor-pointer justify-start gap-2">
+          <%= form.check_box :is_public, class: "checkbox checkbox-primary" %>
+          <span class="label-text">Make profile public</span>
+        </label>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-control w-full">
+          <%= form.label :password, class: "label" do %>
+            <span class="label-text">Password</span>
+          <% end %>
+          <%= form.password_field :password,
+            placeholder: @user.persisted? ? "Leave blank to keep current password" : "",
+            class: "input input-bordered w-full" %>
+          <% if @user.persisted? %>
+            <label class="label">
+              <span class="label-text-alt">Leave blank to keep current password</span>
+            </label>
+          <% end %>
+        </div>
+
+        <div class="form-control w-full">
+          <%= form.label :password_confirmation, class: "label" do %>
+            <span class="label-text">Password Confirmation</span>
+          <% end %>
+          <%= form.password_field :password_confirmation, class: "input input-bordered w-full" %>
+        </div>
+      </div>
+
+      <div class="card-actions justify-end pt-4">
+        <%= link_to "Cancel", @user.persisted? ? @user : users_path,
+          class: "btn btn-ghost" %>
+        <%= form.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

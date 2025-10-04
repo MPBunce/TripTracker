@@ -1,0 +1,42 @@
+<div class="max-w-4xl mx-auto p-6">
+  <!-- Trip Header -->
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold mb-2"><%= @trip.title %></h1>
+  </div>
+
+  <!-- Trip Description -->
+  <div class="prose prose-lg mb-6">
+    <%= simple_format(@trip.description) %>
+  </div>
+
+  <!-- Trip Days -->
+  <% if @trip.trip_days.any? %>
+    <h2 class="text-2xl font-semibold mb-4">Itinerary</h2>
+    <div class="space-y-4">
+      <% @trip.trip_days.each_with_index do |day, index| %>
+        <div class="card bg-base-100 shadow-md p-4">
+          <div class="flex justify-between items-center mb-2">
+            <div class="badge badge-primary">Day <%= index + 1 %></div>
+            <time class="text-sm text-gray-500"><%= day.date&.strftime("%B %-d, %Y") %></time>
+          </div>
+          <h3 class="font-semibold"><%= day.title %></h3>
+          <p><%= day.location %></p>
+          <p><%= simple_format(day.description) %></p>
+
+          <% if day.images.attached? %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+              <% day.images.each do |image| %>
+                <%= image_tag image, class: "rounded shadow-sm w-full object-cover" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="flex gap-4 mt-6">
+    <%= link_to "Edit Trip", edit_trip_path(@trip), class: "btn btn-primary" %>
+    <%= link_to "Back to Trips", trips_path, class: "btn btn-ghost" %>
+  </div>
+</div>

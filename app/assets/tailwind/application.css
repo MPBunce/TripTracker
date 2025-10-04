@@ -4,6 +4,7 @@
 @source "../../../app/helpers/**/*.rb";
 @source "../../../app/javascript/**/*.js";
 @source "../../../app/views/**/*";
+
 @plugin "./daisyui.mjs";
 
 /* Optional for custom themes – Docs: https://daisyui.com/docs/themes/#how-to-add-a-new-custom-theme */
@@ -12,6 +13,6 @@
 }
 
 @plugin "./daisyui.mjs" {
-   themes: nord --default, business --prefersdark;
+   themes: winter --default, dim --prefersdark;
    prefix: "du-";
 }

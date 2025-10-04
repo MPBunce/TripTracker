@@ -1,0 +1,37 @@
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title text-2xl mb-4">Trip Overview</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:col-span-2">
+        <%= f.label :title, class: "block text-sm font-medium mb-2" %>
+        <%= f.text_field :title, class: "input input-bordered w-full" %>
+      </div>
+
+      <div>
+        <%= f.label :start_date, class: "block text-sm font-medium mb-2" %>
+        <%= f.date_field :start_date, class: "input input-bordered w-full" %>
+      </div>
+
+      <div>
+        <%= f.label :end_date, class: "block text-sm font-medium mb-2" %>
+        <%= f.date_field :end_date, class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="md:col-span-2">
+        <%= f.label :location, class: "block text-sm font-medium mb-2" %>
+        <%= f.text_field :location, class: "input input-bordered w-full" %>
+      </div>
+
+      <div class="md:col-span-2">
+        <%= f.label :description, class: "block text-sm font-medium mb-2" %>
+        <%= f.text_area :description, rows: 4, class: "textarea textarea-bordered w-full" %>
+      </div>
+
+      <div class="md:col-span-2 flex items-center gap-2">
+        <%= f.check_box :in_planning, class: "checkbox checkbox-primary" %>
+        <%= f.label :in_planning, "This trip is still in planning", class: "text-sm font-medium" %>
+      </div>
+    </div>
+  </div>
+</div>

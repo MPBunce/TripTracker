@@ -1,0 +1,48 @@
+<%= form_with model: @trip, local: true do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <h3>Trip Days</h3>
+  <%= f.fields_for :trip_days do |day_form| %>
+    <div class="trip-day">
+      <div>
+        <%= day_form.label :day_number %>
+        <%= day_form.number_field :day_number %>
+      </div>
+      <div>
+        <%= day_form.label :date %>
+        <%= day_form.date_field :date %>
+      </div>
+      <div>
+        <%= day_form.label :location %>
+        <%= day_form.text_field :location %>
+      </div>
+      <div>
+        <%= day_form.label :title, "Activity Title" %>
+        <%= day_form.text_field :title %>
+      </div>
+      <div>
+        <%= day_form.label :description %>
+        <%= day_form.text_area :description %>
+      </div>
+      <div>
+        <%= day_form.file_field :images, multiple: true %>
+      </div>
+      <div>
+        <%= day_form.check_box :_destroy %>
+        <%= day_form.label :_destroy, "Remove this day" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.submit "Create Trip" %>
+  </div>
+<% end %>

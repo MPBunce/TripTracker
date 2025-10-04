@@ -1,12 +1,113 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+  <div class="card lg:card-side bg-base-100 shadow-xl max-w-4xl w-full overflow-hidden">
+    
+    <!-- Left Side - Image -->
+    <div class="lg:w-1/2 bg-gradient-to-br from-blue-500 to-indigo-600 relative min-h-[300px] lg:min-h-[600px]">
+      <!-- Mountain SVG Illustration -->
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+        <!-- Sky gradient -->
+        <defs>
+          <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect width="400" height="600" fill="url(#skyGradient)"/>
+        
+        <!-- Sun -->
+        <circle cx="100" cy="120" r="40" fill="#fbbf24" opacity="0.9"/>
+        
+        <!-- Clouds -->
+        <ellipse cx="280" cy="100" rx="40" ry="20" fill="white" opacity="0.3"/>
+        <ellipse cx="300" cy="95" rx="35" ry="18" fill="white" opacity="0.3"/>
+        <ellipse cx="320" cy="100" rx="30" ry="15" fill="white" opacity="0.3"/>
+        
+        <!-- Mountains -->
+        <polygon points="0,600 150,250 300,600" fill="#1e40af" opacity="0.8"/>
+        <polygon points="100,600 250,200 400,600" fill="#1e3a8a" opacity="0.9"/>
+        <polygon points="200,600 300,300 400,600" fill="#312e81" opacity="0.7"/>
+        
+        <!-- Snow caps -->
+        <polygon points="250,200 220,280 280,280" fill="white" opacity="0.9"/>
+        <polygon points="150,250 130,310 170,310" fill="white" opacity="0.8"/>
+        
+        <!-- Plane -->
+        <g transform="translate(50, 180)">
+          <path d="M0,0 L30,-5 L35,-3 L25,0 L35,3 L30,5 Z" fill="white"/>
+          <rect x="10" y="-1" width="15" height="2" fill="white"/>
+        </g>
+      </svg>
+      
+      <!-- Overlay Text -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-8 bg-black/10">
+        <h1 class="text-4xl font-bold mb-4 text-center">Start Your Journey</h1>
+        <p class="text-lg text-center opacity-90">Discover amazing destinations around the world</p>
+      </div>
+    </div>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in", class: "btn btn-primary" %>
-<% end %>
-<br>
+    <!-- Right Side - Login Form -->
+    <div class="lg:w-1/2 p-8 lg:p-12">
+      <div class="max-w-md mx-auto">
+        <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
+        <p class="text-base-content/60 mb-8">Sign in to continue your adventure</p>
 
-<%= link_to "Forgot password?", new_password_path %> | 
-<%= link_to "Create account", new_user_path %>
+        <!-- Flash Messages -->
+        <% if flash[:alert] %>
+          <div class="alert alert-error mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span><%= flash[:alert] %></span>
+          </div>
+        <% end %>
+
+        <% if flash[:notice] %>
+          <div class="alert alert-success mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span><%= flash[:notice] %></span>
+          </div>
+        <% end %>
+
+        <!-- Login Form -->
+        <%= form_with url: session_path do |form| %>
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text">Email Address</span>
+            </label>
+            <%= form.email_field :email_address, 
+                required: true, 
+                autofocus: true, 
+                autocomplete: "username", 
+                placeholder: "Enter your email address", 
+                value: params[:email_address],
+                class: "input input-bordered w-full" %>
+          </div>
+
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <%= form.password_field :password, 
+                required: true, 
+                autocomplete: "current-password", 
+                placeholder: "Enter your password", 
+                maxlength: 72,
+                class: "input input-bordered w-full" %>
+          </div>
+
+          <div class="form-control mt-6">
+            <%= form.submit "Sign in", class: "btn btn-primary w-full" %>
+          </div>
+        <% end %>
+
+        <!-- Footer Links -->
+        <div class="flex justify-between items-center mt-6 text-sm">
+          <%= link_to "Forgot password?", new_password_path, class: "link link-hover" %>
+          <%= link_to "Create account", new_user_path, class: "link link-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

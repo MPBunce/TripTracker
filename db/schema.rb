@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_30_165028) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_03_231144) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_165028) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "trip_id", null: false
+    t.text "content"
+    t.integer "parent_comment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_comment_id"], name: "index_comments_on_parent_comment_id"
+    t.index ["trip_id"], name: "index_comments_on_trip_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "follows", force: :cascade do |t|
     t.integer "follower_id", null: false
     t.integer "followee_id", null: false
@@ -57,40 +69,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_165028) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "post_comments", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "post_id", null: false
-    t.text "content"
-    t.integer "parent_comment_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["parent_comment_id"], name: "index_post_comments_on_parent_comment_id"
-    t.index ["post_id"], name: "index_post_comments_on_post_id"
-    t.index ["user_id"], name: "index_post_comments_on_user_id"
-  end
-
-  create_table "post_images", force: :cascade do |t|
-    t.integer "post_id", null: false
-    t.string "caption"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_post_images_on_post_id"
-  end
-
-  create_table "posts", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "title"
-    t.text "content"
-    t.string "location"
-    t.integer "post_type"
-    t.integer "visibility"
-    t.decimal "latitude"
-    t.decimal "longitude"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_posts_on_user_id"
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -98,6 +76,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_165028) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "trip_days", force: :cascade do |t|
+    t.integer "trip_id", null: false
+    t.integer "day_number", null: false
+    t.date "date"
+    t.string "title"
+    t.text "description"
+    t.string "location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trip_id", "day_number"], name: "index_trip_days_on_trip_id_and_day_number", unique: true
+    t.index ["trip_id"], name: "index_trip_days_on_trip_id"
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title"
+    t.text "description"
+    t.string "location"
+    t.integer "post_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "in_planning", default: true
+    t.date "start_date"
+    t.date "end_date"
+    t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -113,14 +118,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_165028) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "comments", column: "parent_comment_id"
+  add_foreign_key "comments", "trips"
+  add_foreign_key "comments", "users"
   add_foreign_key "follows", "followees"
   add_foreign_key "follows", "followers"
-  add_foreign_key "likes", "posts"
+  add_foreign_key "likes", "trips", column: "post_id"
   add_foreign_key "likes", "users"
-  add_foreign_key "post_comments", "parent_comments"
-  add_foreign_key "post_comments", "posts"
-  add_foreign_key "post_comments", "users"
-  add_foreign_key "post_images", "posts"
-  add_foreign_key "posts", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "trip_days", "trips"
+  add_foreign_key "trips", "users"
 end

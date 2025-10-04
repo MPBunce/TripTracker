@@ -1,4 +1,126 @@
-<h1>New User</h1>
+<div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+  <div class="card lg:card-side bg-base-100 shadow-xl w-full max-w-5xl overflow-hidden">
+    
+    <!-- Left Side - Image -->
+    <div class="lg:w-1/2 bg-gradient-to-br from-emerald-500 to-teal-600 relative min-h-[300px] lg:min-h-[600px]">
+      <!-- Beach/Travel SVG Illustration -->
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+        <!-- Sky gradient -->
+        <defs>
+          <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0d9488;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect width="400" height="600" fill="url(#skyGradient)"/>
+        
+        <!-- Sun -->
+        <circle cx="320" cy="100" r="50" fill="#fbbf24" opacity="0.9"/>
+        
+        <!-- Palm tree -->
+        <rect x="80" y="350" width="15" height="150" fill="#92400e"/>
+        <ellipse cx="87" cy="340" rx="40" ry="25" fill="#166534"/>
+        <ellipse cx="87" cy="320" rx="45" ry="30" fill="#15803d"/>
+        <ellipse cx="87" cy="300" rx="35" ry="20" fill="#16a34a"/>
+        
+        <!-- Second palm tree -->
+        <rect x="300" y="380" width="12" height="120" fill="#92400e"/>
+        <ellipse cx="306" cy="370" rx="35" ry="20" fill="#166534"/>
+        <ellipse cx="306" cy="355" rx="38" ry="25" fill="#15803d"/>
+        <ellipse cx="306" cy="340" rx="30" ry="18" fill="#16a34a"/>
+        
+        <!-- Sand/beach -->
+        <ellipse cx="200" cy="580" rx="250" ry="80" fill="#fef3c7" opacity="0.8"/>
+        
+        <!-- Waves -->
+        <path d="M0,480 Q100,460 200,480 T400,480 L400,600 L0,600 Z" fill="#0ea5e9" opacity="0.6"/>
+        <path d="M0,510 Q100,490 200,510 T400,510 L400,600 L0,600 Z" fill="#0284c7" opacity="0.7"/>
+      </svg>
+      
+      <!-- Overlay Text -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-8 bg-black/10">
+        <h1 class="text-4xl font-bold mb-4 text-center">Begin Your Adventure</h1>
+        <p class="text-lg text-center opacity-90">Join thousands of travelers exploring the world</p>
+      </div>
+    </div>
 
-<%= render "form", user: @user %>
-<%= link_to "Cancel", users_path %>
+    <!-- Right Side - Create Account Form -->
+    <div class="lg:w-1/2 p-8 lg:p-12">
+      <div class="max-w-md mx-auto">
+        <h2 class="text-3xl font-bold mb-2">Create Account</h2>
+        <p class="text-base-content/60 mb-8">Start planning your next journey today</p>
+
+        <!-- Error Messages -->
+        <% if @user.errors.any? %>
+          <div class="alert alert-error mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 class="font-bold">
+                There were <%= pluralize(@user.errors.count, "error") %> with your submission:
+              </h3>
+              <ul class="list-disc list-inside mt-2">
+                <% @user.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Create Account Form -->
+        <%= form_with model: @user, local: true do |form| %>
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text">Email Address</span>
+            </label>
+            <%= form.email_field :email_address, 
+                required: true, 
+                autofocus: true, 
+                autocomplete: "username", 
+                placeholder: "Enter your email address",
+                class: "input input-bordered w-full" %>
+          </div>
+
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <%= form.password_field :password, 
+                required: true, 
+                autocomplete: "new-password", 
+                placeholder: "Create a password", 
+                maxlength: 72,
+                class: "input input-bordered w-full" %>
+            <label class="label">
+              <span class="label-text-alt">Must be at least 8 characters</span>
+            </label>
+          </div>
+
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text">Password Confirmation</span>
+            </label>
+            <%= form.password_field :password_confirmation, 
+                required: true, 
+                autocomplete: "new-password", 
+                placeholder: "Confirm your password", 
+                maxlength: 72,
+                class: "input input-bordered w-full" %>
+          </div>
+
+          <div class="form-control mt-6">
+            <%= form.submit "Create Account", class: "btn btn-primary w-full" %>
+          </div>
+        <% end %>
+
+        <!-- Footer Links -->
+        <div class="text-center mt-6 text-sm">
+          <span class="text-base-content/70">Already have an account?</span>
+          <%= link_to "Sign in", new_session_path, class: "link link-primary font-semibold ml-1" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

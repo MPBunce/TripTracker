@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @trips = @user.trips.order(created_at: :desc)
   end
 
   def new
@@ -14,6 +15,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.email_address = @user.email_address.downcase
     if @user.save
       redirect_to @user
     else

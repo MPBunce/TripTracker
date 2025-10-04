@@ -1,1 +1,39 @@
-<h1>New User</h1>
+<div class="max-w-5xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Create New Trip</h1>
+  <%= form_with model: @trip, class: "space-y-8", data: { controller: "trip-days" } do |f| %>
+    <!-- Trip Overview -->
+    <%= render "trip_overview_fields", f: f %>
+    
+    <!-- Daily Itinerary -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="card-title text-2xl">Daily Itinerary</h2>
+          <button type="button"
+                  class="btn btn-primary btn-sm gap-2"
+                  data-action="click->trip-days#add">
+            + Add Day
+          </button>
+        </div>
+        
+        <ul class="timeline timeline-vertical timeline-snap-icon max-md:timeline-compact" data-trip-days-target="container">
+          <%= f.fields_for :trip_days do |day_form| %>
+            <%= render "trip_days/trip_day_fields", f: day_form %>
+          <% end %>
+        </ul>
+        
+        <!-- Hidden template for new days -->
+        <template data-trip-days-target="template">
+          <%= f.fields_for :trip_days, @trip.trip_days.build, child_index: "NEW_RECORD" do |day_form| %>
+            <%= render "trip_days/trip_day_fields", f: day_form %>
+          <% end %>
+        </template>
+      </div>
+    </div>
+    
+    <div class="flex gap-4">
+      <%= f.submit "Create Trip", class: "btn btn-primary" %>
+      <%= link_to "Cancel", trips_path, class: "btn btn-ghost" %>
+    </div>
+  <% end %>
+</div>

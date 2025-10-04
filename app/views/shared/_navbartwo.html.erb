@@ -2,43 +2,47 @@
 <div class="navbar bg-base-200 rounded-box shadow-xl p-3 md:p-4">
   <!-- Left side (logo or nav links if you want in the future) -->
   <div class="navbar-start">
-
-    <%= link_to new_trip_path, class: "btn btn-primary btn-sm md:btn-md" do %>
-      New Trip +
-    <% end %>
+    <div class="flex items-center gap-2 md:gap-3">
+      <!-- Jet Icon Link to Root -->
+      <%= link_to root_path, class: "btn btn-ghost btn-sm md:btn-md text-2xl md:text-3xl hover:scale-110 transition-transform" do %>
+        ✈️
+      <% end %>
+      
+      <!-- New Trip Button -->
+      <%= link_to new_trip_path, class: "btn btn-primary btn-sm md:btn-md" do %>
+        New Trip +
+      <% end %>
+    </div>
   </div>
-
+  
   <!-- Center (optional navigation items) -->
   <div class="navbar-center hidden md:flex">
     <!-- You could add navigation links here if needed -->
   </div>
-
+  
   <!-- Right side -->
   <div class="navbar-end gap-2 md:gap-3 items-center">
-    <!-- New Trip button -->
-
     <!-- Theme Toggle -->
     <label class="swap swap-rotate">
       <input type="checkbox" class="theme-controller" value="dim" />
-        <!-- Sun -->
-        <svg class="swap-off h-6 w-6 md:h-7 md:w-7 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M12 18a6 6 0 100-12 6 6 0 000 12zM12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M6.34 17.66l-1.41 1.41m0-12.72l1.41 1.41M17.66 17.66l1.41 1.41"/>
-        </svg>
-        <!-- Moon -->
-        <svg class="swap-on h-6 w-6 md:h-7 md:w-7 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-        </svg>
+      <!-- Sun -->
+      <svg class="swap-off h-6 w-6 md:h-7 md:w-7 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 18a6 6 0 100-12 6 6 0 000 12zM12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M6.34 17.66l-1.41 1.41m0-12.72l1.41 1.41M17.66 17.66l1.41 1.41"/>
+      </svg>
+      <!-- Moon -->
+      <svg class="swap-on h-6 w-6 md:h-7 md:w-7 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
     </label>
-
+    
     <!-- Users Link -->
     <a href="/users" class="btn btn-sm md:btn-md hover:bg-white/20">Users</a>
-
+    
     <!-- Log out Button -->
     <form action="/session" method="post" style="display: inline;">
       <input type="hidden" name="_method" value="delete">
       <button type="submit" class="btn btn-error btn-sm md:btn-md shadow-lg">Log out</button>
     </form>
-
     <!-- Alternative (signed out state)
     <a href="/session/new" class="btn btn-accent btn-sm md:btn-md shadow-lg font-semibold">Sign in</a>
     -->
