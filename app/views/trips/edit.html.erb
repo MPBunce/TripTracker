@@ -1,60 +1,43 @@
-<div class="max-w-4xl mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6">Edit Post</h1>
-
-  <%= form_with model: @post, local: true, class: "space-y-6" do |form| %>
-    <% if @post.errors.any? %>
-      <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
-        <h2 class="font-semibold mb-2"><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-        <ul class="list-disc list-inside">
-          <% @post.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <div>
-      <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.text_field :title, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-    </div>
-
-    <div>
-      <%= form.label :content, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.text_area :content, rows: 8, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-    </div>
-
-    <div>
-      <%= form.label :location, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.text_field :location, class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-    </div>
-
-    <div class="flex items-center">
-      <%= form.check_box :in_planning, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
-      <%= form.label :in_planning, "This trip is still in planning", class: "ml-2 text-sm font-medium text-gray-700" %>
-    </div>
-
-    <% if @post.images.attached? %>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Current Images</label>
-        <div class="grid grid-cols-3 gap-4">
-          <% @post.images.each do |image| %>
-            <div class="relative">
-              <%= image_tag image, class: "w-full h-32 object-cover rounded-lg" %>
-              <%= button_to "Remove", delete_image_post_path(@post, image_id: image.id), method: :delete, class: "absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-700", data: { confirm: "Are you sure?" } %>
-            </div>
-          <% end %>
+<div class="max-w-5xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Editing Trip</h1>
+  
+  <%= form_with model: @trip, data: { controller: "trip-days" } do |f| %>
+    <div class="space-y-8">
+      <!-- Trip Overview -->
+      <%= render "trip_overview_fields", f: f %>
+      
+      <!-- Daily Itinerary -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="card-title text-2xl">Daily Itinerary</h2>
+            <button type="button"
+                    class="btn btn-primary btn-sm gap-2"
+                    data-action="click->trip-days#add">
+              + Add Day
+            </button>
+          </div>
+          
+          <ul class="timeline timeline-vertical timeline-snap-icon max-md:timeline-compact" 
+              data-trip-days-target="container">
+            <%= f.fields_for :trip_days do |day_form| %>
+              <%= render "trip_days/trip_day_fields", f: day_form %>
+            <% end %>
+          </ul>
+          
+          <!-- Hidden template for new days -->
+          <template data-trip-days-target="template">
+            <%= f.fields_for :trip_days, @trip.trip_days.build, child_index: "NEW_RECORD" do |day_form| %>
+              <%= render "trip_days/trip_day_fields", f: day_form %>
+            <% end %>
+          </template>
         </div>
       </div>
-    <% end %>
-
-    <div>
-      <%= form.label :images, "Add More Images", class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.file_field :images, multiple: true, accept: "image/*", class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
-    </div>
-
-    <div class="flex gap-4">
-      <%= form.submit "Update Post", class: "px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer" %>
-      <%= link_to "Cancel", @post, class: "px-6 py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2" %>
+      
+      <div class="flex gap-4">
+        <%= f.submit "Update Trip", class: "btn btn-primary" %>
+        <%= link_to "Cancel", trip_path(@trip), class: "btn btn-ghost" %>
+      </div>
     </div>
   <% end %>
 </div>

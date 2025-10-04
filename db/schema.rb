@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_03_231144) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_04_224335) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -56,8 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_231144) do
     t.integer "followee_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["followee_id"], name: "index_follows_on_followee_id"
-    t.index ["follower_id"], name: "index_follows_on_follower_id"
+    t.index ["follower_id", "followee_id"], name: "index_follows_on_follower_id_and_followee_id", unique: true
   end
 
   create_table "likes", force: :cascade do |t|
@@ -121,8 +120,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_231144) do
   add_foreign_key "comments", "comments", column: "parent_comment_id"
   add_foreign_key "comments", "trips"
   add_foreign_key "comments", "users"
-  add_foreign_key "follows", "followees"
-  add_foreign_key "follows", "followers"
   add_foreign_key "likes", "trips", column: "post_id"
   add_foreign_key "likes", "users"
   add_foreign_key "sessions", "users"
